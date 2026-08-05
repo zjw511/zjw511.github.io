@@ -59,6 +59,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC',
 .ec-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .ec-addr{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
 .ec-desc{font-size:11px;color:#aaa;margin-top:3px;line-height:1.4}
+.ec-travel{font-size:11px;color:#26d0ce;margin-top:3px;line-height:1.4;background:#f0fffe;padding:3px 8px;border-radius:6px;display:inline-block}
 .ec-tags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
 .tag{font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600;white-space:nowrap}
 .tag-free{background:#e8f5e9;color:#2e7d32}.tag-pay{background:#fff3e0;color:#e65100}.tag-booked{background:#e3f2fd;color:#1565c0}.tag-alert{background:#ffebee;color:#c62828}.tag-food{background:#fce4ec;color:#c62828}
@@ -171,44 +172,45 @@ var E=[
 {id:2,day:0,date:'2026-08-04',time:'09:01',type:'alert',name:'南普陀寺预约',desc:'公众号"南普陀寺"预约8月7日参观',loc:'南普陀寺公众号',tags:['免费']},
 {id:3,day:0,date:'2026-08-06',time:'08:00',type:'alert',name:'MF8223值机选座',desc:'厦航APP/携程APP 提前24h值机',loc:'厦航APP'},
 {id:10,day:1,date:'2026-08-06',time:'15:25',type:'train',name:'G6278 唐山→天津',desc:'一等座·积分支付·39分钟·中途下车',loc:'唐山站',addr:'路北区新华西道',lng:118.2010,lat:39.6280,trainNo:'G6278',tags:['已订']},
-{id:11,day:1,date:'2026-08-06',time:'16:15',type:'food',name:'东伊顺餐厅晚餐',desc:'人均¥50-60·16:30开门·锅塌/八珍豆腐',loc:'东伊顺餐厅',addr:'河东区华捷道与新兆路交叉口',lng:117.2065,lat:39.1235,tags:['美食']},
-{id:12,day:1,date:'2026-08-06',time:'17:30',type:'hotel',name:'入住星程酒店',desc:'华住会积分兑换·打车30分钟¥60',loc:'星程天津滨海国际机场酒店',addr:'东丽区华明街弘顺道',lng:117.2480,lat:39.1350,tags:['积分免费']},
+{id:11,day:1,date:'2026-08-06',time:'16:15',type:'food',name:'东伊顺餐厅晚餐',desc:'人均¥50-60·16:30开门·锅塌/八珍豆腐',loc:'东伊顺餐厅',addr:'河东区华捷道与新兆路交叉口',lng:117.2065,lat:39.1235,tags:['美食'],travel:'🚶 步行7分钟·约500米'},
+{id:12,day:1,date:'2026-08-06',time:'17:30',type:'hotel',name:'入住星程酒店',desc:'华住会积分兑换·打车30分钟¥60',loc:'星程天津滨海国际机场酒店',addr:'东丽区华明街弘顺道',lng:117.2480,lat:39.1350,tags:['积分免费'],travel:'🚕 打车30分钟·¥60·约18公里'},
 {id:13,day:1,date:'2026-08-06',time:'22:00',type:'alert',name:'设04:30闹钟',desc:'明早MF8136 07:00起飞·05:00前到机场',loc:''},
-{id:20,day:2,date:'2026-08-07',time:'04:30',type:'alert',name:'起床退房赴机场',desc:'退房·打车10分钟到天津滨海T2',loc:''},
+{id:20,day:2,date:'2026-08-07',time:'04:30',type:'alert',name:'起床退房赴机场',desc:'退房·打车10分钟到天津滨海T2',loc:'',travel:'🚕 打车10-15分钟·¥30-40·约8公里'},
 {id:21,day:2,date:'2026-08-07',time:'07:00',type:'flight',name:'MF8136 天津→厦门',desc:'头等舱F舱·波音737-800·2h35m·机上早餐',loc:'天津滨海T2→厦门高崎T3',addr:'天津滨海国际机场T2',lng:117.3480,lat:39.1280,flightNo:'MF8136',tags:['头等舱 ¥1,410']},
-{id:22,day:2,date:'2026-08-07',time:'10:00',type:'hotel',name:'入住诺富特酒店',desc:'华住会积分兑换·海景套房·放行李出门',loc:'厦门诺富特酒店',addr:'思明区高雄路1号·环岛东路观音山',lng:118.1980,lat:24.4780,tags:['积分免费']},
-{id:23,day:2,date:'2026-08-07',time:'11:00',type:'food',name:'八市早午餐',desc:'阿玲面线糊/阿杰五香/天河土笋冻/王家海蛎饼',loc:'厦门第八市场',addr:'开禾路·溪岸路一带',lng:118.0935,lat:24.4635,tags:['美食']},
-{id:24,day:2,date:'2026-08-07',time:'12:30',type:'visit',name:'中山路购物',desc:'买伴手礼·黄则和花生汤17:00关门！12:30开始14:00结束',loc:'中山路步行街',addr:'中山路',lng:118.0868,lat:24.4615,tags:['购物']},
-{id:241,day:2,date:'2026-08-07',time:'14:00',type:'visit',name:'厦门大学',desc:'免费·暑假下午13:00-16:00·西校门进→芙蓉湖→上弦场→芙蓉隧道→白城门出',loc:'厦门大学',addr:'思明南路422号·西校门进',lng:118.0895,lat:24.4375,tags:['免费·需摇号']},
-{id:25,day:2,date:'2026-08-07',time:'15:00',type:'visit',name:'南普陀寺',desc:'已预约·免费·厦大白城门出来步行5分钟',loc:'南普陀寺',addr:'思明南路515号',lng:118.0905,lat:24.4370,tags:['免费·已预约']},
-{id:26,day:2,date:'2026-08-07',time:'16:00',type:'visit',name:'植物园雨林世界',desc:'¥30·雨林喷雾到17:00·西门进→雨林→多肉→南门扶梯出',loc:'厦门园林植物园',addr:'虎园路25号·西门进',lng:118.0920,lat:24.4390,tags:['¥30']},
-{id:27,day:2,date:'2026-08-07',time:'17:15',type:'visit',name:'白城沙滩日落',desc:'日落约18:30·植物园南门出来就是',loc:'白城沙滩',addr:'大学路',lng:118.0985,lat:24.4350,tags:['免费']},
-{id:28,day:2,date:'2026-08-07',time:'18:30',type:'visit',name:'沙坡尾艺术西区',desc:'日落后更好·集装箱咖啡馆+涂鸦墙+双子塔夜景',loc:'沙坡尾艺术西区',addr:'沙坡尾58号',lng:118.0860,lat:24.4360,tags:['免费']},
-{id:29,day:2,date:'2026-08-07',time:'19:30',type:'food',name:'中山路夜宵',desc:'月华沙茶面(只收现金！)/1980烧肉粽/豪香里脊',loc:'月华沙茶面',addr:'镇邦路78号',lng:118.0865,lat:24.4610,tags:['美食']},
+{id:22,day:2,date:'2026-08-07',time:'10:00',type:'hotel',name:'入住诺富特酒店',desc:'华住会积分兑换·海景套房·放行李出门',loc:'厦门诺富特酒店',addr:'思明区高雄路1号·环岛东路观音山',lng:118.1980,lat:24.4780,tags:['积分免费'],travel:'🚕 打车25分钟·¥40-60·约15公里'},
+{id:23,day:2,date:'2026-08-07',time:'11:00',type:'food',name:'八市早午餐',desc:'阿玲面线糊/阿杰五香/天河土笋冻/王家海蛎饼',loc:'厦门第八市场',addr:'开禾路·溪岸路一带',lng:118.0935,lat:24.4635,tags:['美食'],travel:'🚇 地铁2号线何厝站→吕厝换1号线→镇海路站·¥4·约30分钟'},
+{id:24,day:2,date:'2026-08-07',time:'12:30',type:'visit',name:'中山路购物',desc:'买伴手礼·黄则和花生汤17:00关门！12:30开始14:00结束',loc:'中山路步行街',addr:'中山路',lng:118.0868,lat:24.4615,tags:['购物'],travel:'🚶 步行5分钟·开禾路直走到中山路右转'},
+{id:241,day:2,date:'2026-08-07',time:'14:00',type:'visit',name:'厦门大学',desc:'免费·暑假下午13:00-16:00·西校门进→芙蓉湖→上弦场→芙蓉隧道→白城门出',loc:'厦门大学',addr:'思明南路422号·西校门进',lng:118.0895,lat:24.4375,tags:['免费·需摇号'],travel:'🚕 打车10分钟·¥15-20·约3公里'},
+{id:25,day:2,date:'2026-08-07',time:'15:00',type:'visit',name:'南普陀寺',desc:'已预约·免费·厦大白城门出来步行5分钟',loc:'南普陀寺',addr:'思明南路515号',lng:118.0905,lat:24.4370,tags:['免费·已预约'],travel:'🚶 步行5分钟·厦大白城门出→思明南路西行'},
+{id:26,day:2,date:'2026-08-07',time:'16:00',type:'visit',name:'植物园雨林世界',desc:'¥30·雨林喷雾到17:00·西门进→雨林→多肉→南门扶梯出',loc:'厦门园林植物园',addr:'虎园路25号·西门进',lng:118.0920,lat:24.4390,tags:['¥30'],travel:'🚶 步行10分钟·约800米'},
+{id:27,day:2,date:'2026-08-07',time:'17:15',type:'visit',name:'白城沙滩日落',desc:'日落约18:30·植物园南门出来就是',loc:'白城沙滩',addr:'大学路',lng:118.0985,lat:24.4350,tags:['免费'],travel:'🚶 步行10分钟·植物园南门→环岛南路'},
+{id:28,day:2,date:'2026-08-07',time:'18:30',type:'visit',name:'沙坡尾艺术西区',desc:'日落后更好·集装箱咖啡馆+涂鸦墙+双子塔夜景',loc:'沙坡尾艺术西区',addr:'沙坡尾58号',lng:118.0860,lat:24.4360,tags:['免费'],travel:'🚶 步行15分钟·约1公里·或🚕打车5分钟¥12'},
+{id:29,day:2,date:'2026-08-07',time:'19:30',type:'food',name:'中山路夜宵',desc:'月华沙茶面(只收现金！)/1980烧肉粽/豪香里脊',loc:'月华沙茶面',addr:'镇邦路78号',lng:118.0865,lat:24.4610,tags:['美食'],travel:'🚕 打车10分钟·¥15-20·约3公里'},
+{id:291,day:2,date:'2026-08-07',time:'21:00',type:'hotel',name:'回酒店休息',desc:'为D3鼓浪屿+海上看金门养精蓄锐',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,travel:'🚕 打车20分钟·¥40-50·约12公里·或🚇地铁35分钟¥5'},
 {id:40,day:3,date:'2026-08-08',time:'06:30',type:'food',name:'酒店早餐',desc:'诺富特自助¥78/人·06:30-10:00·吃饱再上岛',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,tags:['¥78']},
-{id:41,day:3,date:'2026-08-08',time:'07:00',type:'transport',name:'打车去码头',desc:'诺富特→东渡客运码头·20-25分钟',loc:'东渡客运码头',addr:'东渡路',lng:118.0580,lat:24.4770},
-{id:42,day:3,date:'2026-08-08',time:'08:30',type:'ship',name:'乘船上岛',desc:'DSP0830-1·¥35普通舱·刷身份证·航程20分钟',loc:'东渡→三丘田码头',addr:'东渡客运码头',lng:118.0580,lat:24.4770,shipNo:'DSP0830-1',tags:['已购票']},
-{id:43,day:3,date:'2026-08-08',time:'09:00',type:'food',name:'龙头路小吃',desc:'酒店已吃饱·林氏鱼丸+叶氏麻糍',loc:'鼓浪屿龙头路',addr:'龙头路',lng:118.0630,lat:24.4480,tags:['小吃']},
-{id:44,day:3,date:'2026-08-08',time:'09:30',type:'visit',name:'日光岩',desc:'¥50·鼓浪屿最高点·约2小时',loc:'日光岩',addr:'晃岩路62号',lng:118.0635,lat:24.4495,tags:['¥50']},
-{id:45,day:3,date:'2026-08-08',time:'11:30',type:'visit',name:'菽庄花园',desc:'¥30·海边花园+钢琴博物馆·约1.5小时',loc:'菽庄花园',addr:'港仔后7号',lng:118.0585,lat:24.4435,tags:['¥30']},
-{id:46,day:3,date:'2026-08-08',time:'13:00',type:'food',name:'龙头路午餐',desc:'康家海蛎煎/沈家肠粉',loc:'龙头路',addr:'龙头路189号',lng:118.0630,lat:24.4480,tags:['美食']},
-{id:47,day:3,date:'2026-08-08',time:'14:00',type:'visit',name:'皓月园+万国建筑',desc:'¥10·郑成功雕像·海景壮阔·速览30分钟',loc:'皓月园',addr:'漳州路3号',lng:118.0605,lat:24.4420,tags:['¥10']},
-{id:471,day:3,date:'2026-08-08',time:'14:30',type:'ship',name:'乘船返回东渡',desc:'三丘田→东渡·返程免费',loc:'三丘田码头',addr:'三丘田码头',lng:118.0650,lat:24.4520},
-{id:472,day:3,date:'2026-08-08',time:'15:00',type:'transport',name:'打车去和平码头',desc:'东渡→和平码头约15分钟',loc:'和平码头',addr:'鹭江道3号',lng:118.0810,lat:24.4595},
-{id:473,day:3,date:'2026-08-08',time:'15:30',type:'ship',name:'海上看金门',desc:'¥128-188·航程90分钟·途经鼓浪屿→演武大桥→厦大→胡里山炮台→远眺金门列岛（大担岛、二担岛、小金门）',loc:'和平码头',addr:'鹭江道3号·和平码头登船',lng:118.0810,lat:24.4595,shipNo:'海上看金门',tags:['¥128-188']},
-{id:474,day:3,date:'2026-08-08',time:'17:00',type:'transport',name:'打车去曾厝垵',desc:'和平码头→曾厝垵约18分钟',loc:'曾厝垵',addr:'曾厝垵',lng:118.1080,lat:24.4350},
+{id:41,day:3,date:'2026-08-08',time:'07:00',type:'transport',name:'打车去码头',desc:'诺富特→东渡客运码头·20-25分钟',loc:'东渡客运码头',addr:'东渡路',lng:118.0580,lat:24.4770,travel:'🚕 打车20-25分钟·¥30-50·约13公里'},
+{id:42,day:3,date:'2026-08-08',time:'08:30',type:'ship',name:'乘船上岛',desc:'DSP0830-1·¥35普通舱·刷身份证·航程20分钟',loc:'东渡→三丘田码头',addr:'东渡客运码头',lng:118.0580,lat:24.4770,shipNo:'DSP0830-1',tags:['已购票'],travel:'🚢 船程20分钟·刷身份证登船'},
+{id:43,day:3,date:'2026-08-08',time:'09:00',type:'food',name:'龙头路小吃',desc:'酒店已吃饱·林氏鱼丸+叶氏麻糍',loc:'鼓浪屿龙头路',addr:'龙头路',lng:118.0630,lat:24.4480,tags:['小吃'],travel:'🚶 步行5分钟·三丘田码头→龙头路'},
+{id:44,day:3,date:'2026-08-08',time:'09:30',type:'visit',name:'日光岩',desc:'¥50·鼓浪屿最高点·约2小时',loc:'日光岩',addr:'晃岩路62号',lng:118.0635,lat:24.4495,tags:['¥50'],travel:'🚶 步行10分钟·上坡路'},
+{id:45,day:3,date:'2026-08-08',time:'11:30',type:'visit',name:'菽庄花园',desc:'¥30·海边花园+钢琴博物馆·约1.5小时',loc:'菽庄花园',addr:'港仔后7号',lng:118.0585,lat:24.4435,tags:['¥30'],travel:'🚶 步行15分钟·下坡往海边'},
+{id:46,day:3,date:'2026-08-08',time:'13:00',type:'food',name:'龙头路午餐',desc:'康家海蛎煎/沈家肠粉',loc:'龙头路',addr:'龙头路189号',lng:118.0630,lat:24.4480,tags:['美食'],travel:'🚶 步行10分钟·菽庄花园→龙头路'},
+{id:47,day:3,date:'2026-08-08',time:'14:00',type:'visit',name:'皓月园+万国建筑',desc:'¥10·郑成功雕像·海景壮阔·速览30分钟',loc:'皓月园',addr:'漳州路3号',lng:118.0605,lat:24.4420,tags:['¥10'],travel:'🚶 步行10分钟·龙头路→漳州路'},
+{id:471,day:3,date:'2026-08-08',time:'14:30',type:'ship',name:'乘船返回东渡',desc:'三丘田→东渡·返程免费',loc:'三丘田码头',addr:'三丘田码头',lng:118.0650,lat:24.4520,travel:'🚶 步行10分钟·皓月园→三丘田码头'},
+{id:472,day:3,date:'2026-08-08',time:'15:00',type:'transport',name:'打车去和平码头',desc:'东渡→和平码头约15分钟',loc:'和平码头',addr:'鹭江道3号',lng:118.0810,lat:24.4595,travel:'🚕 打车15分钟·¥25-35·约8公里'},
+{id:473,day:3,date:'2026-08-08',time:'15:30',type:'ship',name:'海上看金门',desc:'¥128-188·航程90分钟·途经鼓浪屿→演武大桥→厦大→胡里山炮台→远眺金门列岛（大担岛、二担岛、小金门）',loc:'和平码头',addr:'鹭江道3号·和平码头登船',lng:118.0810,lat:24.4595,shipNo:'海上看金门',tags:['¥128-188'],travel:'🚢 航程90分钟·刷身份证登船'},
+{id:474,day:3,date:'2026-08-08',time:'17:00',type:'transport',name:'打车去曾厝垵',desc:'和平码头→曾厝垵约18分钟',loc:'曾厝垵',addr:'曾厝垵',lng:118.1080,lat:24.4350,travel:'🚕 打车18分钟·¥30-40·约10公里'},
 {id:49,day:3,date:'2026-08-08',time:'17:30',type:'visit',name:'曾厝垵下午逛',desc:'人少好拍照·比晚上挤舒服',loc:'曾厝垵文创村',addr:'曾厝垵',lng:118.1080,lat:24.4350,tags:['免费']},
-{id:51,day:3,date:'2026-08-08',time:'18:30',type:'food',name:'曾厝垵晚餐',desc:'五兰沙茶面(米其林！)/朋友佳四果汤',loc:'五兰沙茶面',addr:'教堂街289号',lng:118.1085,lat:24.4355,tags:['美食']},
-{id:52,day:3,date:'2026-08-08',time:'20:00',type:'hotel',name:'回酒店',desc:'曾厝垵→诺富特·10-15分钟',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780},
+{id:51,day:3,date:'2026-08-08',time:'18:30',type:'food',name:'曾厝垵晚餐',desc:'五兰沙茶面(米其林！)/朋友佳四果汤',loc:'五兰沙茶面',addr:'教堂街289号',lng:118.1085,lat:24.4355,tags:['美食'],travel:'🚶 步行3分钟·文创村内'},
+{id:52,day:3,date:'2026-08-08',time:'20:00',type:'hotel',name:'回酒店',desc:'曾厝垵→诺富特·10-15分钟',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,travel:'🚕 打车10-15分钟·¥25-35·约5公里'},
 {id:53,day:3,date:'2026-08-08',time:'20:30',type:'alert',name:'MF8223值机选座',desc:'厦航APP/携程·提前24h值机',loc:''},
 {id:60,day:4,date:'2026-08-09',time:'07:00',type:'food',name:'酒店早餐',desc:'诺富特自助¥78/人·退房前吃好',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,tags:['¥78']},
-{id:61,day:4,date:'2026-08-09',time:'08:30',type:'visit',name:'胡里山炮台',desc:'¥25·打车10分钟·世界现存最大海岸古炮',loc:'胡里山炮台',addr:'曾厝垵路2号',lng:118.1050,lat:24.4355,tags:['¥25']},
-{id:62,day:4,date:'2026-08-09',time:'10:00',type:'hotel',name:'退房取行李',desc:'回酒店退房取寄存行李',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780},
-{id:63,day:4,date:'2026-08-09',time:'10:45',type:'transport',name:'出发去机场',desc:'打车25-30分钟·头等舱优先值机·11:15前到达',loc:'厦门高崎机场T3',addr:'湖里区高崎',lng:118.1390,lat:24.5440},
+{id:61,day:4,date:'2026-08-09',time:'08:30',type:'visit',name:'胡里山炮台',desc:'¥25·打车10分钟·世界现存最大海岸古炮',loc:'胡里山炮台',addr:'曾厝垵路2号',lng:118.1050,lat:24.4355,tags:['¥25'],travel:'🚕 打车10分钟·¥15-20·约4公里'},
+{id:62,day:4,date:'2026-08-09',time:'10:00',type:'hotel',name:'退房取行李',desc:'回酒店退房取寄存行李',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,travel:'🚕 打车10分钟·¥15-20·原路返回'},
+{id:63,day:4,date:'2026-08-09',time:'10:45',type:'transport',name:'出发去机场',desc:'打车25-30分钟·头等舱优先值机·11:15前到达',loc:'厦门高崎机场T3',addr:'湖里区高崎',lng:118.1390,lat:24.5440,travel:'🚕 打车25-30分钟·¥50-70·约18公里'},
 {id:64,day:4,date:'2026-08-09',time:'12:40',type:'flight',name:'MF8223 厦门→郑州',desc:'头等舱F舱·波音737·2h45m·机上餐食',loc:'厦门高崎T3→郑州新郑T2',addr:'厦门高崎国际机场T3',lng:118.1390,lat:24.5440,flightNo:'MF8223',tags:['头等舱 ¥2,110']},
-{id:65,day:4,date:'2026-08-09',time:'15:25',type:'transport',name:'到达郑州·步行赶高铁',desc:'步行至T2楼下新郑机场站',loc:'郑州新郑机场T2',addr:'新郑市',lng:113.8430,lat:34.5230},
-{id:66,day:4,date:'2026-08-09',time:'16:21',type:'train',name:'G7962 城际',desc:'新郑机场→郑州东·15分钟·二等座¥13',loc:'新郑机场站→郑州东站',addr:'郑州东站',lng:113.6630,lat:34.7550,trainNo:'G7962',tags:['已订 ¥13']},
-{id:67,day:4,date:'2026-08-09',time:'17:06',type:'train',name:'G378 高铁回石家庄',desc:'郑州东→石家庄·1h15m·二等座¥227',loc:'郑州东→石家庄',addr:'石家庄站',lng:114.4860,lat:38.0240,trainNo:'G378',tags:['已订 ¥227']},
+{id:65,day:4,date:'2026-08-09',time:'15:25',type:'transport',name:'到达郑州·步行赶高铁',desc:'步行至T2楼下新郑机场站',loc:'郑州新郑机场T2',addr:'新郑市',lng:113.8430,lat:34.5230,travel:'🚶 步行5分钟·T2航站楼→楼下新郑机场站'},
+{id:66,day:4,date:'2026-08-09',time:'16:21',type:'train',name:'G7962 城际',desc:'新郑机场→郑州东·15分钟·二等座¥13',loc:'新郑机场站→郑州东站',addr:'郑州东站',lng:113.6630,lat:34.7550,trainNo:'G7962',tags:['已订 ¥13'],travel:'🚄 城际列车15分钟·二等座¥13'},
+{id:67,day:4,date:'2026-08-09',time:'17:06',type:'train',name:'G378 高铁回石家庄',desc:'郑州东→石家庄·1h15m·二等座¥227',loc:'郑州东→石家庄',addr:'石家庄站',lng:114.4860,lat:38.0240,trainNo:'G378',tags:['已订 ¥227'],travel:'🚶 步行5-10分钟·站内换乘通道'},
 {id:68,day:4,date:'2026-08-09',time:'18:21',type:'hotel',name:'🎉 到家！行程结束！',desc:'行程圆满结束！',loc:'石家庄站',addr:'石家庄站',lng:114.4860,lat:38.0240}
 ];
 
@@ -224,6 +226,7 @@ function renderCard(e){
   var html='<div class="event-card '+e.type+'"><div class="ec-main"><div class="ec-time"><div class="t" style="color:'+c.color+'">'+e.time+'</div><div class="d">'+(e.duration||'')+'</div></div><div class="ec-body"><div class="ec-name">'+c.icon+' '+e.name+'</div>';
   if(e.addr)html+='<div class="ec-addr">📍 '+e.addr+'</div>';
   if(e.desc)html+='<div class="ec-desc">'+e.desc+'</div>';
+  if(e.travel)html+='<div class="ec-travel">'+e.travel+'</div>';
   if(e.tags){html+='<div class="ec-tags">';e.tags.forEach(function(t){var cls='tag-pay';if(t.indexOf('免费')>=0)cls='tag-free';if(t.indexOf('已订')>=0||t.indexOf('已购')>=0)cls='tag-booked';if(t.indexOf('必')>=0)cls='tag-alert';if(t.indexOf('美食')>=0||t.indexOf('小吃')>=0)cls='tag-food';html+='<span class="tag '+cls+'">'+t+'</span>'});html+='</div>'}
   html+='</div></div>';
   var btns='';

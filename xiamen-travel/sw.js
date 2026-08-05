@@ -1,5 +1,5 @@
 // Service Worker - 离线缓存
-var CACHE_NAME = 'xiamen-travel-v1';
+var CACHE_NAME = 'xiamen-travel-v2';
 var ASSETS = [
   './',
   './index.html',
