@@ -1,5 +1,5 @@
 // Service Worker - 离线缓存
-var CACHE_NAME = 'xiamen-travel-v2';
+var CACHE_NAME = 'xiamen-travel-v3';
 var ASSETS = [
   './',
   './index.html',
@@ -31,19 +31,17 @@ self.addEventListener('activate', function(e) {
   );
 });
 
-// 离线优先策略
+// 混合策略：HTML走网络优先（确保更新即时生效），其他资源走缓存优先
 self.addEventListener('fetch', function(e) {
-  // 只处理GET请求
   if (e.request.method !== 'GET') return;
-  
-  e.respondWith(
-    caches.match(e.request).then(function(cached) {
-      // 有缓存就用缓存（离线可用）
-      if (cached) return cached;
-      
-      // 没缓存就请求网络
-      return fetch(e.request).then(function(response) {
-        // 成功了就存一份缓存
+
+  var url = new URL(e.request.url);
+  var isHTML = e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/';
+
+  if (isHTML) {
+    // HTML: 网络优先，失败时回退缓存（离线可用）
+    e.respondWith(
+      fetch(e.request).then(function(response) {
         if (response && response.status === 200) {
           var clone = response.clone();
           caches.open(CACHE_NAME).then(function(cache) {
@@ -52,9 +50,28 @@ self.addEventListener('fetch', function(e) {
         }
         return response;
       }).catch(function() {
-        // 网络也失败了，回退到首页
-        return caches.match('./index.html');
-      });
-    })
-  );
+        return caches.match(e.request).then(function(cached) {
+          return cached || caches.match('./index.html');
+        });
+      })
+    );
+  } else {
+    // 其他资源: 缓存优先
+    e.respondWith(
+      caches.match(e.request).then(function(cached) {
+        if (cached) return cached;
+        return fetch(e.request).then(function(response) {
+          if (response && response.status === 200) {
+            var clone = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(e.request, clone);
+            });
+          }
+          return response;
+        }).catch(function() {
+          return caches.match('./index.html');
+        });
+      })
+    );
+  }
 });

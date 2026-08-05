@@ -263,10 +263,27 @@ function triggerInstall(){if(deferredPrompt){deferredPrompt.prompt();deferredPro
 
 // Service Worker Registration (offline support, only when served via http/https)
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  navigator.serviceWorker.register('./sw.js').then(function(){
+  navigator.serviceWorker.register('./sw.js').then(function(reg){
     console.log('SW已注册，离线可用');
+    // 检测到新版本时自动刷新页面
+    reg.addEventListener('updatefound',function(){
+      var nw=reg.installing;
+      if(nw){
+        nw.addEventListener('statechange',function(){
+          if(nw.state==='activated' && navigator.serviceWorker.controller){
+            window.location.reload();
+          }
+        });
+      }
+    });
+    // 每次打开页面都检查更新
+    reg.update();
   }).catch(function(err){
     console.log('SW注册失败:',err);
+  });
+  // 监听控制器变更（新SW接管时自动刷新）
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    window.location.reload();
   });
 }
 
