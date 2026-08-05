@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="厦门旅行">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧳%3C/text%3E%3C/svg%3E">
+<title>厦门旅行</title>
+<style>
+:root{--flight:#667eea;--train:#4facfe;--ship:#43e97b;--food:#fa709a;--visit:#a23ec8;--hotel:#ffa502;--alert:#ff4757;--transport:#26d0ce;--bg:#f0f2f5;--card:#fff;--ink:#1a1a2e;--muted:#999;--line:#eee}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans CJK SC','PingFang SC',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+/* === Dynamic Island === */
+.island{position:fixed;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:9999;width:300px;background:#1a1a2e;border-radius:28px;transition:all .5s cubic-bezier(.4,0,.2,1);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3);cursor:pointer}
+.island.expanded{width:340px;border-radius:24px}
+.island-compact{display:flex;align-items:center;padding:10px 16px;gap:8px}
+.island-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.island-text{flex:1;min-width:0}
+.island-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.island-count{font-size:10px;color:#888;margin-top:1px}
+.island-icon{font-size:16px;flex-shrink:0}
+.island-expand{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 16px}
+.island.expanded .island-expand{max-height:320px;padding:0 16px 14px}
+.island-detail{color:#ccc;font-size:12px;line-height:1.6}
+.island-detail strong{color:#fff}
+.island-actions{display:flex;gap:8px;margin-top:10px}
+.island-btn{flex:1;background:rgba(255,255,255,.12);border:none;border-radius:8px;padding:8px;font-size:11px;color:#fff;font-weight:600;text-align:center;cursor:pointer}
+.island-btn:active{background:rgba(255,255,255,.25)}
+/* === Header === */
+.app-header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:56px 16px 16px;text-align:center}
+.app-header h1{font-size:18px;font-weight:700}
+.app-header p{font-size:12px;opacity:.8;margin-top:2px}
+/* === Day Tabs === */
+.day-tabs{position:sticky;top:0;z-index:100;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:6px 8px;gap:4px}
+.day-tab{flex:1;padding:10px 4px;text-align:center;border-radius:10px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;border:none;background:transparent}
+.day-tab.active{color:#fff}
+.day-tab[data-day="0"].active{background:#ff4757}
+.day-tab[data-day="1"].active{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.day-tab[data-day="2"].active{background:linear-gradient(135deg,#667eea,#764ba2)}
+.day-tab[data-day="3"].active{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.day-tab[data-day="4"].active{background:linear-gradient(135deg,#fa709a,#fee140)}
+.day-tab .badge{display:block;font-size:10px;font-weight:400;opacity:.7;margin-top:2px}
+/* === Timeline === */
+.timeline{max-width:680px;margin:0 auto;padding:12px 12px 80px}
+.event-card{background:#fff;border-radius:14px;margin-bottom:6px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);border-left:4px solid var(--muted)}
+.event-card.flight{border-color:var(--flight)}.event-card.train{border-color:var(--train)}.event-card.ship{border-color:var(--ship)}.event-card.food{border-color:var(--food)}.event-card.visit{border-color:var(--visit)}.event-card.hotel{border-color:var(--hotel)}.event-card.alert{border-color:var(--alert)}.event-card.transport{border-color:var(--transport)}
+.ec-main{display:flex;gap:0}
+.ec-time{width:64px;flex-shrink:0;padding:12px 6px;text-align:center;border-right:1px solid var(--line)}
+.ec-time .t{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.ec-time .d{font-size:9px;color:var(--muted);margin-top:2px}
+.ec-body{flex:1;padding:10px 12px;min-width:0}
+.ec-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.ec-addr{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+.ec-desc{font-size:11px;color:#aaa;margin-top:3px;line-height:1.4}
+.ec-tags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.tag{font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600;white-space:nowrap}
+.tag-free{background:#e8f5e9;color:#2e7d32}.tag-pay{background:#fff3e0;color:#e65100}.tag-booked{background:#e3f2fd;color:#1565c0}.tag-alert{background:#ffebee;color:#c62828}.tag-food{background:#fce4ec;color:#c62828}
+.ec-actions{display:flex;gap:6px;padding:0 12px 10px;flex-wrap:wrap}
+.ec-btn{font-size:11px;padding:6px 10px;border-radius:8px;border:none;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:3px;white-space:nowrap}
+.ec-btn:active{transform:scale(.95)}
+.ec-btn-umetrip{background:#e8eaf6;color:#3f51b5}
+.ec-btn-12306{background:#e3f2fd;color:#1565c0}
+.ec-btn-walk{background:#e8f5e9;color:#2e7d32}
+.ec-btn-taxi{background:#fff3e0;color:#e65100}
+.ec-btn-ticket{background:#f3e5f5;color:#7b1fa2}
+/* === Nav between stops === */
+.nav-next{display:flex;align-items:center;gap:6px;padding:8px 12px;margin:0 auto 6px;max-width:680px;background:#f8f9fa;border-radius:10px;font-size:11px}
+.nav-next .arrow{color:var(--muted);font-size:14px}
+.nav-next .next-name{flex:1;color:#555;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-next .nav-btn{font-size:10px;padding:4px 8px;border-radius:6px;border:none;cursor:pointer;font-weight:600}
+.nav-next .nav-btn:active{transform:scale(.95)}
+.nav-btn-walk{background:#e8f5e9;color:#2e7d32}
+.nav-btn-taxi{background:#fff3e0;color:#e65100}
+/* === Nav Modal === */
+.nav-modal{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 32px;z-index:9998;transform:translateY(100%);transition:transform .3s ease;box-shadow:0 -4px 20px rgba(0,0,0,.15)}
+.nav-modal.show{transform:translateY(0)}
+.nav-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9997;opacity:0;pointer-events:none;transition:opacity .3s}
+.nav-modal-overlay.show{opacity:1;pointer-events:auto}
+.nav-modal h3{font-size:16px;font-weight:700;margin-bottom:4px;text-align:center}
+.nav-modal .route{font-size:12px;color:var(--muted);text-align:center;margin-bottom:16px}
+.nav-modal .route strong{color:var(--ink)}
+.nav-options{display:flex;gap:10px}
+.nav-option{flex:1;border-radius:14px;padding:16px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.nav-option:active{transform:scale(.97)}
+.nav-option.walk{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-color:#81c784}
+.nav-option.taxi{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-color:#ffb74d}
+.nav-option .icon{font-size:28px;margin-bottom:6px}
+.nav-option .label{font-size:14px;font-weight:700}
+.nav-option .sub{font-size:10px;color:#888;margin-top:2px}
+.nav-close{position:absolute;top:12px;right:16px;font-size:18px;color:var(--muted);cursor:pointer;background:none;border:none}
+/* === Install banner === */
+.install-banner{position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#fff;padding:14px 16px;display:none;align-items:center;gap:10px;z-index:9000;box-shadow:0 -2px 12px rgba(0,0,0,.2)}
+.install-banner.show{display:flex}
+.install-banner .ic{font-size:24px}
+.install-banner .txt{flex:1;font-size:13px}
+.install-banner .btn{background:#667eea;border:none;border-radius:8px;padding:8px 16px;color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.install-banner .btn:active{transform:scale(.95)}
+.install-banner .close{background:none;border:none;color:#888;font-size:16px;cursor:pointer;padding:4px}
+.bottom-spacer{height:60px}
+@media(max-width:380px){.island{width:280px}.island.expanded{width:320px}}
+</style>
+</head>
+<body>
+
+<!-- Dynamic Island -->
+<div class="island" id="island" onclick="toggleIsland()">
+  <div class="island-compact">
+    <div class="island-dot" id="islandDot"></div>
+    <div class="island-icon" id="islandIcon">⏰</div>
+    <div class="island-text">
+      <div class="island-name" id="islandName">加载中...</div>
+      <div class="island-count" id="islandCount">--</div>
+    </div>
+  </div>
+  <div class="island-expand" id="islandExpand">
+    <div class="island-detail" id="islandDetail"></div>
+    <div class="island-actions" id="islandActions"></div>
+  </div>
+</div>
+
+<!-- App Header -->
+<div class="app-header">
+  <h1>🧳 厦门·旅行日历</h1>
+  <p>2026年8月6日—9日 · 背包客版 · 离线可用</p>
+</div>
+
+<!-- Day Tabs -->
+<div class="day-tabs" id="dayTabs">
+  <button class="day-tab" data-day="0" onclick="switchDay(0)">行前<span class="badge">抢票</span></button>
+  <button class="day-tab" data-day="1" onclick="switchDay(1)">D1<span class="badge">8.6赴津</span></button>
+  <button class="day-tab" data-day="2" onclick="switchDay(2)">D2<span class="badge">8.7飞厦门</span></button>
+  <button class="day-tab" data-day="3" onclick="switchDay(3)">D3<span class="badge">8.8鼓浪屿</span></button>
+  <button class="day-tab" data-day="4" onclick="switchDay(4)">D4<span class="badge">8.9返程</span></button>
+</div>
+
+<!-- Timeline -->
+<div class="timeline" id="timeline"></div>
+<div class="bottom-spacer"></div>
+
+<!-- Nav Modal -->
+<div class="nav-modal-overlay" id="navOverlay" onclick="closeNavModal()"></div>
+<div class="nav-modal" id="navModal">
+  <button class="nav-close" onclick="closeNavModal()">✕</button>
+  <h3>选择导航方式</h3>
+  <div class="route" id="navRoute"></div>
+  <div class="nav-options">
+    <div class="nav-option walk" onclick="doNavigate('walk')"><div class="icon">🚶</div><div class="label">步行导航</div><div class="sub">高德地图·步行路线</div></div>
+    <div class="nav-option taxi" onclick="doNavigate('car')"><div class="icon">🚕</div><div class="label">打车导航</div><div class="sub">高德地图·驾车路线</div></div>
+  </div>
+</div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+  <div class="ic">📲</div>
+  <div class="txt">添加到主屏幕，离线使用</div>
+  <button class="btn" onclick="triggerInstall()">安装</button>
+  <button class="close" onclick="document.getElementById('installBanner').classList.remove('show')">✕</button>
+</div>
+
+<script>
+// ===== Event Data (all inline, no network needed) =====
+var E=[
+{id:1,day:0,date:'2026-08-04',time:'09:00',type:'alert',name:'鼓浪屿船票抢票',desc:'微信小程序"屿见厦门"抢8月8日08:30班次',loc:'屿见厦门小程序',tags:['必抢']},
+{id:2,day:0,date:'2026-08-04',time:'09:01',type:'alert',name:'南普陀寺预约',desc:'公众号"南普陀寺"预约8月7日参观',loc:'南普陀寺公众号',tags:['免费']},
+{id:3,day:0,date:'2026-08-06',time:'08:00',type:'alert',name:'MF8223值机选座',desc:'厦航APP/携程APP 提前24h值机',loc:'厦航APP'},
+{id:10,day:1,date:'2026-08-06',time:'15:25',type:'train',name:'G6278 唐山→天津',desc:'一等座·积分支付·39分钟·中途下车',loc:'唐山站',addr:'路北区新华西道',lng:118.2010,lat:39.6280,trainNo:'G6278',tags:['已订']},
+{id:11,day:1,date:'2026-08-06',time:'16:15',type:'food',name:'东伊顺餐厅晚餐',desc:'人均¥50-60·16:30开门·锅塌/八珍豆腐',loc:'东伊顺餐厅',addr:'河东区华捷道与新兆路交叉口',lng:117.2065,lat:39.1235,tags:['美食']},
+{id:12,day:1,date:'2026-08-06',time:'17:30',type:'hotel',name:'入住星程酒店',desc:'华住会积分兑换·打车30分钟¥60',loc:'星程天津滨海国际机场酒店',addr:'东丽区华明街弘顺道',lng:117.2480,lat:39.1350,tags:['积分免费']},
+{id:13,day:1,date:'2026-08-06',time:'22:00',type:'alert',name:'设04:30闹钟',desc:'明早MF8136 07:00起飞·05:00前到机场',loc:''},
+{id:20,day:2,date:'2026-08-07',time:'04:30',type:'alert',name:'起床退房赴机场',desc:'退房·打车10分钟到天津滨海T2',loc:''},
+{id:21,day:2,date:'2026-08-07',time:'07:00',type:'flight',name:'MF8136 天津→厦门',desc:'头等舱F舱·波音737-800·2h35m·机上早餐',loc:'天津滨海T2→厦门高崎T3',addr:'天津滨海国际机场T2',lng:117.3480,lat:39.1280,flightNo:'MF8136',tags:['头等舱 ¥1,410']},
+{id:22,day:2,date:'2026-08-07',time:'10:00',type:'hotel',name:'入住诺富特酒店',desc:'华住会积分兑换·海景套房·放行李出门',loc:'厦门诺富特酒店',addr:'思明区高雄路1号·环岛东路观音山',lng:118.1980,lat:24.4780,tags:['积分免费']},
+{id:23,day:2,date:'2026-08-07',time:'11:00',type:'food',name:'八市早午餐',desc:'阿玲面线糊/阿杰五香/天河土笋冻/王家海蛎饼',loc:'厦门第八市场',addr:'开禾路·溪岸路一带',lng:118.0935,lat:24.4635,tags:['美食']},
+{id:24,day:2,date:'2026-08-07',time:'12:30',type:'visit',name:'中山路购物',desc:'买伴手礼·黄则和花生汤17:00关门！12:30开始14:00结束',loc:'中山路步行街',addr:'中山路',lng:118.0868,lat:24.4615,tags:['购物']},
+{id:241,day:2,date:'2026-08-07',time:'14:00',type:'visit',name:'厦门大学',desc:'免费·暑假下午13:00-16:00·西校门进→芙蓉湖→上弦场→芙蓉隧道→白城门出',loc:'厦门大学',addr:'思明南路422号·西校门进',lng:118.0895,lat:24.4375,tags:['免费·需摇号']},
+{id:25,day:2,date:'2026-08-07',time:'15:00',type:'visit',name:'南普陀寺',desc:'已预约·免费·厦大白城门出来步行5分钟',loc:'南普陀寺',addr:'思明南路515号',lng:118.0905,lat:24.4370,tags:['免费·已预约']},
+{id:26,day:2,date:'2026-08-07',time:'16:00',type:'visit',name:'植物园雨林世界',desc:'¥30·雨林喷雾到17:00·西门进→雨林→多肉→南门扶梯出',loc:'厦门园林植物园',addr:'虎园路25号·西门进',lng:118.0920,lat:24.4390,tags:['¥30']},
+{id:27,day:2,date:'2026-08-07',time:'17:15',type:'visit',name:'白城沙滩日落',desc:'日落约18:30·植物园南门出来就是',loc:'白城沙滩',addr:'大学路',lng:118.0985,lat:24.4350,tags:['免费']},
+{id:28,day:2,date:'2026-08-07',time:'18:30',type:'visit',name:'沙坡尾艺术西区',desc:'日落后更好·集装箱咖啡馆+涂鸦墙+双子塔夜景',loc:'沙坡尾艺术西区',addr:'沙坡尾58号',lng:118.0860,lat:24.4360,tags:['免费']},
+{id:29,day:2,date:'2026-08-07',time:'19:30',type:'food',name:'中山路夜宵',desc:'月华沙茶面(只收现金！)/1980烧肉粽/豪香里脊',loc:'月华沙茶面',addr:'镇邦路78号',lng:118.0865,lat:24.4610,tags:['美食']},
+{id:30,day:2,date:'2026-08-07',time:'20:30',type:'visit',name:'和平码头光影秀',desc:'免费·19:30-21:30极光主题光影秀',loc:'和平码头',addr:'鹭江道3号',lng:118.0810,lat:24.4595,tags:['免费']},
+{id:40,day:3,date:'2026-08-08',time:'06:30',type:'food',name:'酒店早餐',desc:'诺富特自助¥78/人·06:30-10:00·吃饱再上岛',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,tags:['¥78']},
+{id:41,day:3,date:'2026-08-08',time:'07:00',type:'transport',name:'打车去码头',desc:'诺富特→东渡客运码头·20-25分钟',loc:'东渡客运码头',addr:'东渡路',lng:118.0580,lat:24.4770},
+{id:42,day:3,date:'2026-08-08',time:'08:30',type:'ship',name:'乘船上岛',desc:'DSP0830-1·¥35普通舱·刷身份证·航程20分钟',loc:'东渡→三丘田码头',addr:'东渡客运码头',lng:118.0580,lat:24.4770,shipNo:'DSP0830-1',tags:['已购票']},
+{id:43,day:3,date:'2026-08-08',time:'09:00',type:'food',name:'龙头路小吃',desc:'酒店已吃饱·林氏鱼丸+叶氏麻糍',loc:'鼓浪屿龙头路',addr:'龙头路',lng:118.0630,lat:24.4480,tags:['小吃']},
+{id:44,day:3,date:'2026-08-08',time:'09:30',type:'visit',name:'日光岩',desc:'¥50·鼓浪屿最高点·约2小时',loc:'日光岩',addr:'晃岩路62号',lng:118.0635,lat:24.4495,tags:['¥50']},
+{id:45,day:3,date:'2026-08-08',time:'11:30',type:'visit',name:'菽庄花园',desc:'¥30·海边花园+钢琴博物馆·约1.5小时',loc:'菽庄花园',addr:'港仔后7号',lng:118.0585,lat:24.4435,tags:['¥30']},
+{id:46,day:3,date:'2026-08-08',time:'13:00',type:'food',name:'龙头路午餐',desc:'康家海蛎煎/沈家肠粉',loc:'龙头路',addr:'龙头路189号',lng:118.0630,lat:24.4480,tags:['美食']},
+{id:47,day:3,date:'2026-08-08',time:'14:00',type:'visit',name:'皓月园+万国建筑',desc:'¥10·郑成功雕像·海景壮阔',loc:'皓月园',addr:'漳州路3号',lng:118.0605,lat:24.4420,tags:['¥10']},
+{id:48,day:3,date:'2026-08-08',time:'15:00',type:'ship',name:'乘船返回',desc:'三丘田→东渡·返程免费',loc:'三丘田码头',addr:'三丘田码头',lng:118.0650,lat:24.4520},
+{id:49,day:3,date:'2026-08-08',time:'15:20',type:'transport',name:'打车去曾厝垵',desc:'东渡→曾厝垵·18分钟',loc:'曾厝垵',addr:'曾厝垵',lng:118.1080,lat:24.4350},
+{id:50,day:3,date:'2026-08-08',time:'16:00',type:'visit',name:'曾厝垵下午逛',desc:'人少好拍照·比晚上挤舒服',loc:'曾厝垵文创村',addr:'曾厝垵',lng:118.1080,lat:24.4350,tags:['免费']},
+{id:51,day:3,date:'2026-08-08',time:'18:00',type:'food',name:'曾厝垵晚餐',desc:'五兰沙茶面(米其林！)/朋友佳四果汤',loc:'五兰沙茶面',addr:'教堂街289号',lng:118.1085,lat:24.4355,tags:['美食']},
+{id:52,day:3,date:'2026-08-08',time:'20:00',type:'hotel',name:'回酒店',desc:'曾厝垵→诺富特·10-15分钟',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780},
+{id:53,day:3,date:'2026-08-08',time:'20:30',type:'alert',name:'MF8223值机选座',desc:'厦航APP/携程·提前24h值机',loc:''},
+{id:60,day:4,date:'2026-08-09',time:'07:00',type:'food',name:'酒店早餐',desc:'诺富特自助¥78/人·退房前吃好',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780,tags:['¥78']},
+{id:61,day:4,date:'2026-08-09',time:'08:30',type:'visit',name:'胡里山炮台',desc:'¥25·打车10分钟·世界现存最大海岸古炮',loc:'胡里山炮台',addr:'曾厝垵路2号',lng:118.1050,lat:24.4355,tags:['¥25']},
+{id:62,day:4,date:'2026-08-09',time:'10:00',type:'hotel',name:'退房取行李',desc:'回酒店退房取寄存行李',loc:'诺富特酒店',addr:'高雄路1号',lng:118.1980,lat:24.4780},
+{id:63,day:4,date:'2026-08-09',time:'10:45',type:'transport',name:'出发去机场',desc:'打车25-30分钟·头等舱优先值机·11:15前到达',loc:'厦门高崎机场T3',addr:'湖里区高崎',lng:118.1390,lat:24.5440},
+{id:64,day:4,date:'2026-08-09',time:'12:40',type:'flight',name:'MF8223 厦门→郑州',desc:'头等舱F舱·波音737·2h45m·机上餐食',loc:'厦门高崎T3→郑州新郑T2',addr:'厦门高崎国际机场T3',lng:118.1390,lat:24.5440,flightNo:'MF8223',tags:['头等舱 ¥2,110']},
+{id:65,day:4,date:'2026-08-09',time:'15:25',type:'transport',name:'到达郑州·步行赶高铁',desc:'步行至T2楼下新郑机场站',loc:'郑州新郑机场T2',addr:'新郑市',lng:113.8430,lat:34.5230},
+{id:66,day:4,date:'2026-08-09',time:'16:21',type:'train',name:'G7962 城际',desc:'新郑机场→郑州东·15分钟·二等座¥13',loc:'新郑机场站→郑州东站',addr:'郑州东站',lng:113.6630,lat:34.7550,trainNo:'G7962',tags:['已订 ¥13']},
+{id:67,day:4,date:'2026-08-09',time:'17:06',type:'train',name:'G378 高铁回石家庄',desc:'郑州东→石家庄·1h15m·二等座¥227',loc:'郑州东→石家庄',addr:'石家庄站',lng:114.4860,lat:38.0240,trainNo:'G378',tags:['已订 ¥227']},
+{id:68,day:4,date:'2026-08-09',time:'18:21',type:'hotel',name:'🎉 到家！行程结束！',desc:'行程圆满结束！',loc:'石家庄站',addr:'石家庄站',lng:114.4860,lat:38.0240}
+];
+
+var TC={flight:{icon:'✈️',color:'#667eea'},train:{icon:'🚄',color:'#4facfe'},ship:{icon:'🚢',color:'#43e97b'},food:{icon:'🍜',color:'#fa709a'},visit:{icon:'📍',color:'#a23ec8'},hotel:{icon:'🏨',color:'#ffa502'},alert:{icon:'⏰',color:'#ff4757'},transport:{icon:'🚕',color:'#26d0ce'}};
+var currentDay=0,navTarget=null,islandExpanded=false,islandTimer=null;
+
+function switchDay(d){currentDay=d;document.querySelectorAll('.day-tab').forEach(function(t){t.classList.toggle('active',parseInt(t.dataset.day)===d)});renderTimeline(d)}
+function esc(s){return s.replace(/'/g,'\\\'')}
+function renderTimeline(d){var ev=E.filter(function(e){return e.day===d});var html='';ev.forEach(function(e,i){html+=renderCard(e);var nxt=null;for(var j=i+1;j<ev.length;j++){if(ev[j].lng&&ev[j].lat){nxt=ev[j];break}}if(nxt&&e.lng&&e.lat){html+='<div class="nav-next"><span class="arrow">↓</span><span class="next-name">下一站：'+nxt.loc+'</span><button class="nav-btn nav-btn-walk" onclick="openNavModal('+e.lng+','+e.lat+',\''+esc(e.loc)+'\','+nxt.lng+','+nxt.lat+',\''+esc(nxt.loc)+'\')">🚶步行</button><button class="nav-btn nav-btn-taxi" onclick="openNavModal('+e.lng+','+e.lat+',\''+esc(e.loc)+'\','+nxt.lng+','+nxt.lat+',\''+esc(nxt.loc)+'\')">🚕打车</button></div>'}});document.getElementById('timeline').innerHTML=html}
+
+function renderCard(e){
+  var c=TC[e.type]||TC.visit;
+  var html='<div class="event-card '+e.type+'"><div class="ec-main"><div class="ec-time"><div class="t" style="color:'+c.color+'">'+e.time+'</div><div class="d">'+(e.duration||'')+'</div></div><div class="ec-body"><div class="ec-name">'+c.icon+' '+e.name+'</div>';
+  if(e.addr)html+='<div class="ec-addr">📍 '+e.addr+'</div>';
+  if(e.desc)html+='<div class="ec-desc">'+e.desc+'</div>';
+  if(e.tags){html+='<div class="ec-tags">';e.tags.forEach(function(t){var cls='tag-pay';if(t.indexOf('免费')>=0)cls='tag-free';if(t.indexOf('已订')>=0||t.indexOf('已购')>=0)cls='tag-booked';if(t.indexOf('必')>=0)cls='tag-alert';if(t.indexOf('美食')>=0||t.indexOf('小吃')>=0)cls='tag-food';html+='<span class="tag '+cls+'">'+t+'</span>'});html+='</div>'}
+  html+='</div></div>';
+  var btns='';
+  if(e.type==='flight'&&e.flightNo){btns+='<button class="ec-btn ec-btn-umetrip" onclick="openUmetrip()">📲 航旅纵横</button>';btns+='<button class="ec-btn ec-btn-12306" onclick="openXiamenAir()">✈️ 厦航值机</button>'}
+  if(e.type==='train'&&e.trainNo){btns+='<button class="ec-btn ec-btn-12306" onclick="open12306()">🚄 12306查车次</button>'}
+  if(e.type==='ship'&&e.shipNo){btns+='<button class="ec-btn ec-btn-ticket" onclick="openShipTicket()">🎫 船票信息</button>'}
+  if(e.lng&&e.lat){btns+='<button class="ec-btn ec-btn-walk" onclick="navigateToHere('+e.lng+','+e.lat+',\''+esc(e.loc)+'\',\'walk\')">🚶 步行到这</button>';btns+='<button class="ec-btn ec-btn-taxi" onclick="navigateToHere('+e.lng+','+e.lat+',\''+esc(e.loc)+'\',\'car\')">🚕 打车到这</button>'}
+  if(btns)html+='<div class="ec-actions">'+btns+'</div>';
+  html+='</div>';return html
+}
+
+// Dynamic Island
+function getNextEvent(){var now=new Date();var up=E.filter(function(e){var d=e.date.split('-');var t=e.time.split(':');return new Date(d[0],d[1]-1,d[2],t[0],t[1])>now});if(up.length===0)return null;up.sort(function(a,b){var da=a.date.split('-'),ta=a.time.split(':'),db=b.date.split('-'),tb=b.time.split(':');return new Date(da[0],da[1]-1,da[2],ta[0],ta[1])-new Date(db[0],db[1]-1,db[2],tb[0],tb[1])});return up[0]}
+function getCountdown(e){var now=new Date();var d=e.date.split('-');var t=e.time.split(':');var et=new Date(d[0],d[1]-1,d[2],t[0],t[1]);var diff=et-now;if(diff<0)return '进行中';var days=Math.floor(diff/86400000);var hours=Math.floor(diff%86400000/3600000);var mins=Math.floor(diff%3600000/60000);if(days>0)return days+'天'+hours+'小时后';if(hours>0)return hours+'小时'+mins+'分钟后';if(mins>0)return mins+'分钟后';return '即将开始！'}
+function updateIsland(){var e=getNextEvent();if(!e){document.getElementById('islandName').textContent='行程已结束';document.getElementById('islandCount').textContent='🎉';document.getElementById('islandDetail').innerHTML='厦门旅行圆满完成！';return}var c=TC[e.type]||TC.visit;document.getElementById('islandDot').style.background=c.color;document.getElementById('islandIcon').textContent=c.icon;document.getElementById('islandName').textContent=e.name;document.getElementById('islandCount').textContent=getCountdown(e);var detail='<strong>'+e.time+'</strong> · '+e.name;if(e.loc)detail+='<br>📍 '+e.loc;if(e.desc)detail+='<br>'+e.desc;detail+='<br><span style="color:'+c.color+'">●</span> '+getCountdown(e);document.getElementById('islandDetail').innerHTML=detail;var actions='';if(e.type==='flight'&&e.flightNo)actions+='<button class="island-btn" onclick="event.stopPropagation();openUmetrip()">📲 航旅纵横</button>';if(e.type==='train'&&e.trainNo)actions+='<button class="island-btn" onclick="event.stopPropagation();open12306()">🚄 12306</button>';if(e.lng&&e.lat){actions+='<button class="island-btn" onclick="event.stopPropagation();navigateToHere('+e.lng+','+e.lat+',\''+esc(e.loc)+'\',\'walk\')">🚶 步行</button>';actions+='<button class="island-btn" onclick="event.stopPropagation();navigateToHere('+e.lng+','+e.lat+',\''+esc(e.loc)+'\',\'car\')">🚕 打车</button>'}document.getElementById('islandActions').innerHTML=actions}
+function toggleIsland(){islandExpanded=!islandExpanded;document.getElementById('island').classList.toggle('expanded',islandExpanded);if(islandExpanded){clearTimeout(islandTimer);islandTimer=setTimeout(function(){islandExpanded=false;document.getElementById('island').classList.remove('expanded')},8000)}}
+
+// Deep Links
+function openUmetrip(){var ua=navigator.userAgent;if(/android/i.test(ua)){window.location.href='intent://umetrip#Intent;scheme=umetrip;package=com.umetrip.android;S.browser_fallback_url=https%3A%2F%2Fwww.umetrip.com;end'}else if(/iphone|ipad|ipod/i.test(ua)){window.location.href='umetrip://';setTimeout(function(){window.location.href='https://www.umetrip.com'},1200)}else{window.open('https://www.umetrip.com','_blank')}}
+function open12306(){var ua=navigator.userAgent;if(/android/i.test(ua)){window.location.href='intent://www.12306.cn#Intent;scheme=https;package=com.MobileTicket;S.browser_fallback_url=https%3A%2F%2Fwww.12306.cn;end'}else if(/iphone|ipad|ipod/i.test(ua)){window.location.href='chinaRailway12306://';setTimeout(function(){window.location.href='https://www.12306.cn'},1200)}else{window.open('https://www.12306.cn','_blank')}}
+function openXiamenAir(){var ua=navigator.userAgent;if(/android/i.test(ua)){window.location.href='intent://#Intent;package=com.xiamenair.app;S.browser_fallback_url=https%3A%2F%2Fwww.xiamenair.com;end'}else if(/iphone|ipad|ipod/i.test(ua)){window.location.href='xiamenair://';setTimeout(function(){window.open('https://www.xiamenair.com','_blank')},1200)}else{window.open('https://www.xiamenair.com','_blank')}}
+function openShipTicket(){alert('船票信息：\n\n班次：DSP0830-1\n日期：2026年8月8日 08:30\n航线：东渡客运码头 → 三丘田码头\n舱位：普通舱 ¥35\n\n登船：刷身份证原件\n返程：20天内有效，免费\n\n购票渠道：微信小程序"屿见厦门"')}
+
+// Amap Navigation
+function navigateToHere(lng,lat,name,mode){window.open('https://uri.amap.com/navigation?to='+lng+','+lat+','+encodeURIComponent(name)+'&mode='+mode+'&src=厦门旅行&coordinate=gcj02','_blank')}
+function openNavModal(fl,fla,fn,tl,tla,tn){navTarget={fl:fl,fla:fla,fn:fn,tl:tl,tla:tla,tn:tn};document.getElementById('navRoute').innerHTML='<strong>'+fn+'</strong> → <strong>'+tn+'</strong>';document.getElementById('navModal').classList.add('show');document.getElementById('navOverlay').classList.add('show')}
+function closeNavModal(){document.getElementById('navModal').classList.remove('show');document.getElementById('navOverlay').classList.remove('show')}
+function doNavigate(mode){if(!navTarget)return;window.open('https://uri.amap.com/navigation?from='+navTarget.fl+','+navTarget.fla+','+encodeURIComponent(navTarget.fn)+'&to='+navTarget.tl+','+navTarget.tla+','+encodeURIComponent(navTarget.tn)+'&mode='+mode+'&src=厦门旅行&coordinate=gcj02','_blank');closeNavModal()}
+
+// PWA Install
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;setTimeout(function(){document.getElementById('installBanner').classList.add('show')},3000)});
+function triggerInstall(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')})}else{alert('安装方法：\n\niPhone(Safari)：底部分享按钮 → 添加到主屏幕\n\n安卓(Chrome)：菜单 → 添加到主屏幕 / 安装应用')}}
+
+// Service Worker Registration (offline support, only when served via http/https)
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  navigator.serviceWorker.register('./sw.js').then(function(){
+    console.log('SW已注册，离线可用');
+  }).catch(function(err){
+    console.log('SW注册失败:',err);
+  });
+}
+
+// Init
+switchDay(0);
+updateIsland();
+setInterval(updateIsland,1000);
+</script>
+</body>
+</html>
