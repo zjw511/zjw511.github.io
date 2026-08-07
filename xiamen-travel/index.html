@@ -180,9 +180,8 @@ var E=[
 {id:22,day:2,date:'2026-08-07',time:'10:00',type:'hotel',name:'入住诺富特酒店',desc:'华住会积分兑换·海景套房·放行李出门',loc:'厦门诺富特酒店',addr:'思明区高雄路1号·环岛东路观音山',lng:118.1980,lat:24.4780,tags:['积分免费'],travel:'🚕 打车25分钟·¥40-60·约15公里'},
 {id:23,day:2,date:'2026-08-07',time:'11:00',type:'food',name:'八市早午餐',desc:'阿玲面线糊/阿杰五香/天河土笋冻/王家海蛎饼',loc:'厦门第八市场',addr:'开禾路·溪岸路一带',lng:118.0935,lat:24.4635,tags:['美食'],travel:'🚇 地铁2号线何厝站→吕厝换1号线→镇海路站·¥4·约30分钟'},
 {id:24,day:2,date:'2026-08-07',time:'12:30',type:'visit',name:'中山路购物',desc:'买伴手礼·黄则和花生汤17:00关门！12:30开始14:00结束',loc:'中山路步行街',addr:'中山路',lng:118.0868,lat:24.4615,tags:['购物'],travel:'🚶 步行5分钟·开禾路直走到中山路右转'},
-{id:241,day:2,date:'2026-08-07',time:'14:00',type:'visit',name:'厦门大学',desc:'免费·暑假下午13:00-16:00·西校门进→芙蓉湖→上弦场→芙蓉隧道→白城门出',loc:'厦门大学',addr:'思明南路422号·西校门进',lng:118.0895,lat:24.4375,tags:['免费·需摇号'],travel:'🚕 打车10分钟·¥15-20·约3公里'},
-{id:25,day:2,date:'2026-08-07',time:'15:00',type:'visit',name:'南普陀寺',desc:'已预约·免费·厦大白城门出来步行5分钟',loc:'南普陀寺',addr:'思明南路515号',lng:118.0905,lat:24.4370,tags:['免费·已预约'],travel:'🚶 步行5分钟·厦大白城门出→思明南路西行'},
-{id:26,day:2,date:'2026-08-07',time:'16:00',type:'visit',name:'植物园雨林世界',desc:'¥30·雨林喷雾到17:00·西门进→雨林→多肉→南门扶梯出',loc:'厦门园林植物园',addr:'虎园路25号·西门进',lng:118.0920,lat:24.4390,tags:['¥30'],travel:'🚶 步行10分钟·约800米'},
+{id:25,day:2,date:'2026-08-07',time:'14:15',type:'visit',name:'南普陀寺',desc:'已预约·免费·厦大没摇上号改直接来·约1小时',loc:'南普陀寺',addr:'思明南路515号',lng:118.0905,lat:24.4370,tags:['免费·已预约'],travel:'🚕 打车10分钟·¥15-20·约3公里·中山路直达'},
+{id:26,day:2,date:'2026-08-07',time:'15:15',type:'visit',name:'植物园雨林世界',desc:'¥30·雨林喷雾到17:00·时间宽裕多逛·西门进→雨林→多肉→南门扶梯出',loc:'厦门园林植物园',addr:'虎园路25号·西门进',lng:118.0920,lat:24.4390,tags:['¥30'],travel:'🚶 步行10分钟·约800米·南普陀→虎园路'},
 {id:27,day:2,date:'2026-08-07',time:'17:15',type:'visit',name:'白城沙滩日落',desc:'日落约18:30·植物园南门出来就是',loc:'白城沙滩',addr:'大学路',lng:118.0985,lat:24.4350,tags:['免费'],travel:'🚶 步行10分钟·植物园南门→环岛南路'},
 {id:28,day:2,date:'2026-08-07',time:'18:30',type:'visit',name:'沙坡尾艺术西区',desc:'日落后更好·集装箱咖啡馆+涂鸦墙+双子塔夜景',loc:'沙坡尾艺术西区',addr:'沙坡尾58号',lng:118.0860,lat:24.4360,tags:['免费'],travel:'🚶 步行15分钟·约1公里·或🚕打车5分钟¥12'},
 {id:29,day:2,date:'2026-08-07',time:'19:30',type:'food',name:'中山路夜宵',desc:'月华沙茶面(只收现金！)/1980烧肉粽/豪香里脊',loc:'月华沙茶面',addr:'镇邦路78号',lng:118.0865,lat:24.4610,tags:['美食'],travel:'🚕 打车10分钟·¥15-20·约3公里'},
@@ -265,7 +264,6 @@ function triggerInstall(){if(deferredPrompt){deferredPrompt.prompt();deferredPro
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   navigator.serviceWorker.register('./sw.js').then(function(reg){
     console.log('SW已注册，离线可用');
-    // 检测到新版本时自动刷新页面
     reg.addEventListener('updatefound',function(){
       var nw=reg.installing;
       if(nw){
@@ -276,12 +274,10 @@ if('serviceWorker' in navigator && location.protocol.startsWith('http')){
         });
       }
     });
-    // 每次打开页面都检查更新
     reg.update();
   }).catch(function(err){
     console.log('SW注册失败:',err);
   });
-  // 监听控制器变更（新SW接管时自动刷新）
   navigator.serviceWorker.addEventListener('controllerchange',function(){
     window.location.reload();
   });
