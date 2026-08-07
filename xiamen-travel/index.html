@@ -283,8 +283,20 @@ if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   });
 }
 
-// Init
-switchDay(0);
+// Init - 根据当天日期自动切换到对应Tab
+function autoSelectDay(){
+  var today=new Date();
+  var y=today.getFullYear(),m=today.getMonth()+1,d=today.getDate();
+  var todayStr=y+'-'+(m<10?'0':'')+m+'-'+(d<10?'0':'')+d;
+  var dates={0:'2026-08-04',1:'2026-08-06',2:'2026-08-07',3:'2026-08-08',4:'2026-08-09'};
+  var bestDay=0;
+  for(var day in dates){
+    if(todayStr>=dates[day])bestDay=parseInt(day);
+  }
+  // 如果已经过了所有行程日期，显示最后一天
+  return bestDay;
+}
+switchDay(autoSelectDay());
 updateIsland();
 setInterval(updateIsland,1000);
 </script>
